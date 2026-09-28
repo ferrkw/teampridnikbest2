@@ -1,0 +1,57 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    @apply border-ink-700;
+  }
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-ink-950 text-slate-200 font-sans antialiased;
+  }
+  ::selection {
+    @apply bg-accent-500/30 text-white;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+  .grid-bg {
+    background-image:
+      linear-gradient(to right, rgba(40, 54, 86, 0.15) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(40, 54, 86, 0.15) 1px, transparent 1px);
+    background-size: 48px 48px;
+  }
+  .radial-glow {
+    background: radial-gradient(ellipse at top, rgba(0, 191, 148, 0.08), transparent 60%);
+  }
+  .clip-tag {
+    clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px));
+  }
+  .clip-card {
+    clip-path: polygon(0 0, 100% 0, 100% calc(100% - 14px), calc(100% - 14px) 100%, 0 100%);
+  }
+  .animation-delay-200 {
+    animation-delay: 200ms;
+  }
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #0b1018;
+}
+::-webkit-scrollbar-thumb {
+  background: #283656;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #1c2740;
+}
