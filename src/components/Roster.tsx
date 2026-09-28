@@ -1,4 +1,4 @@
-import { Swords, Shield, Eye, Crown, Globe, Twitter, Twitch, Star, Trophy } from 'lucide-react';
+import { Swords, Shield, Eye, Crown, Globe, Twitter, Twitch, Star, Trophy, Gamepad2 } from 'lucide-react';
 import type { Player } from '@/lib/supabase';
 
 interface Props {
@@ -13,6 +13,31 @@ const roleIcons: Record<string, React.ReactNode> = {
   'Soft Support': <Eye className="h-4 w-4" />,
   'Hard Support': <Star className="h-4 w-4" />,
 };
+
+const rankNames: Record<number, string> = {
+  10: 'Guardian',
+  11: 'Guardian',
+  12: 'Crusader',
+  13: 'Crusader',
+  14: 'Archon',
+  15: 'Archon',
+  16: 'Legend',
+  17: 'Legend',
+  18: 'Ancient',
+  19: 'Ancient',
+  20: 'Divine',
+  21: 'Legend',
+  22: 'Ancient',
+  23: 'Divine',
+  24: 'Divine',
+  25: 'Immortal',
+  26: 'Immortal',
+};
+
+function getRankName(tier: number | null | undefined): string {
+  if (tier == null) return 'Unranked';
+  return rankNames[tier] || `Tier ${tier}`;
+}
 
 function getInitials(nickname: string) {
   return nickname.slice(0, 2).toUpperCase();
@@ -98,6 +123,15 @@ function PlayerCard({ player, delay }: { player: Player; delay: number }) {
           <p className="text-[10px] text-accent-400/70 font-mono mt-1 tracking-wide">{player.dota_role}</p>
         )}
 
+        {player.steam_persona && (
+          <div className="mt-2 flex items-center gap-1.5">
+            <Gamepad2 className="h-3 w-3 text-slate-450" />
+            <span className="font-mono text-[10px] text-slate-350 tracking-wide truncate">
+              {player.steam_persona}
+            </span>
+          </div>
+        )}
+
         {/* PTS & World Rank — prominent display */}
         <div className="mt-4 grid grid-cols-2 gap-2">
           <div className="bg-accent-500/8 border border-accent-500/20 rounded p-3 text-center">
@@ -113,6 +147,30 @@ function PlayerCard({ player, delay }: { player: Player; delay: number }) {
             <div className="font-mono text-[8px] tracking-wider text-slate-450 uppercase mt-0.5">WORLD RANK</div>
           </div>
         </div>
+
+        {/* Steam stats — MMR & Rank */}
+        {player.steam_mmr != null && (
+          <div className="mt-2 grid grid-cols-2 gap-2">
+            <div className="bg-ink-850/60 border border-ink-700/50 rounded py-2 px-3">
+              <div className="font-mono text-sm font-bold text-white tabular-nums">{player.steam_mmr}</div>
+              <div className="font-mono text-[8px] tracking-wider text-slate-450 uppercase mt-0.5">MMR</div>
+            </div>
+            <div className="bg-ink-850/60 border border-ink-700/50 rounded py-2 px-3">
+              <div className="font-mono text-sm font-bold text-white">{getRankName(player.steam_rank_tier)}</div>
+              <div className="font-mono text-[8px] tracking-wider text-slate-450 uppercase mt-0.5">RANK</div>
+            </div>
+          </div>
+        )}
+
+        {/* Steam W-L record (only if matches exist) */}
+        {player.steam_wins != null && player.steam_losses != null && (player.steam_wins > 0 || player.steam_losses > 0) && (
+          <div className="mt-2 bg-ink-850/60 border border-ink-700/50 rounded py-2 px-3 flex items-center justify-between">
+            <span className="font-mono text-[8px] tracking-wider text-slate-450 uppercase">Steam Record</span>
+            <span className="font-mono text-sm font-bold text-white tabular-nums">
+              {player.steam_wins}W — {player.steam_losses}L
+            </span>
+          </div>
+        )}
 
         <div className="mt-3 grid grid-cols-3 gap-2 text-center">
           <Stat label="KDA" value={player.kd_ratio.toFixed(2)} />

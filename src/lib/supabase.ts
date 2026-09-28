@@ -31,6 +31,13 @@ export interface Player {
   twitch_url: string | null;
   sort_order: number;
   created_at: string;
+  steam_id: string | null;
+  steam_persona: string | null;
+  steam_mmr: number | null;
+  steam_rank_tier: number | null;
+  steam_avatar: string | null;
+  steam_wins: number | null;
+  steam_losses: number | null;
 }
 
 export interface HeroPoolEntry {
